@@ -124,4 +124,19 @@
 			$(self.location).attr("href","/user/getUser?userId=${sessionScope.user.userId}");
 		});
 		
+	 	//=============  판매상품등록 =============	
+	 	$( "a:contains('판매상품등록')" ).on("click" , function() {
+			$(self.location).attr("href","../product/addProductView.jsp");
+		});
+		
+		//=============  판매상품관리 =============	
+	 	$( "a:contains('판매상품관리')" ).eq(1).on("click" , function() {
+			$(self.location).attr("href","../product/listProduct?menu=manage");
+		});
+	 	
+	 	//=============  상 품 검 색 =============	
+	 	$( "a:contains('상 품 검 색')" ).on("click" , function() {
+			$(self.location).attr("href","../product/listProduct?menu=search");
+		});
+		
 	</script>  

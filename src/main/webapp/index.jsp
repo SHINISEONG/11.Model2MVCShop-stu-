@@ -50,6 +50,13 @@
 			});
 		});
 		
+		//============= 상품검색 화면 이동 =============
+		$( function() {
+			$("a[href='#' ]:contains('상품검색')").on("click" , function() {
+				self.location = "product/listProduct?menu=search"
+			});
+		});
+		
 	</script>	
 	
 </head>

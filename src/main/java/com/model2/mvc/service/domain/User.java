@@ -2,6 +2,8 @@ package com.model2.mvc.service.domain;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 
 //==>회원정보를 모델링(추상화/캡슐화)한 Bean
 public class User {
@@ -20,9 +22,8 @@ public class User {
 	private String phone1;
 	private String phone2;
 	private String phone3;
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	// JSON ==> Domain Object  Binding을 위해 추가된 부분
-	private String regDateString;
+	////////////// 다중품목 구매 및 장바구니 구현을 위한  Field ////////////
+	private int cartTranNo;
 
 	
 	
@@ -88,20 +89,9 @@ public class User {
 	public Date getRegDate() {
 		return regDate;
 	}
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	// JSON ==> Domain Object  Binding을 위해 추가된 부분
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
-		
-		if(regDate !=null) {
-			// JSON ==> Domain Object  Binding을 위해 추가된 부분
-			this.setRegDateString( regDate.toString().split("-")[0]
-													+"-"+ regDate.toString().split("-")[1]
-													+ "-" +regDate.toString().split("-")[2] );
-		}
-		
 	}
-	
 	/////////////// EL 적용 위해 추가된 getter Method ///////////
 	public String getPhone1() {
 		return phone1;
@@ -113,33 +103,20 @@ public class User {
 		return phone3;
 	}
 
+	public int getCartTranNo() {
+		return cartTranNo;
+	}
+
+	public void setCartTranNo(int cartTranNo) {
+		this.cartTranNo = cartTranNo;
+	}
+
 	@Override
 	public String toString() {
-		return "UserVO : [userId] "+userId+" [userName] "+userName+" [password] "+password+" [role] "+ role
-			+" [ssn] "+ssn+" [phone] "+phone+" [email] "+email+" [regDate] "+regDate;
-	}
-	
-	////////////////////////////////////////////////////////////////////////////////////////
-	// JSON ==> Domain Object  Binding을 위해 추가된 부분
-	// POJO 의 중요성
-	public void setPhone1(String phone1) {
-		this.phone1 = phone1;
-	}
-	
-	public void setPhone2(String phone2) {
-		this.phone2 = phone2;
-	}
-	
-	public void setPhone3(String phone3) {
-		this.phone3 = phone3;
-	}
-	/////////////////////////////////////////////////////////////////////////////////////////
-
-	public String getRegDateString() {
-		return regDateString;
+		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", role=" + role
+				+ ", ssn=" + ssn + ", phone=" + phone + ", addr=" + addr + ", email=" + email + ", regDate=" + regDate
+				+ ", cartTranNo=" + cartTranNo + "]";
 	}
 
-	public void setRegDateString(String regDateString) {
-		this.regDateString = regDateString;
-	}
+	
 }
