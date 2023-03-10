@@ -22,7 +22,6 @@ public interface ProductDao {
 		
 		
 		
-		
 		// 게시판 Page 처리를 위한 전체Row(totalCount)  return
 		public int getTotalCount(Search search) throws Exception ;
 }
