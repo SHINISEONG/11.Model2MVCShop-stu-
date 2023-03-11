@@ -110,7 +110,6 @@
 	});
 
 	// 무한 스크롤 시작
-	
 	var isEnd = false;
 	
 	var currentPage = 2;
@@ -133,9 +132,9 @@
             if($(window).scrollTop() + $(window).height() +1 > $(document).height()){
 	    	
 	    	 	
-	    	if(isEnd == true){
-		            return;
-		        }
+		    	if(isEnd == true){
+			      return;
+			    }
 	    	 	
 		        $.ajax({
 		            url:"../json/product/listProduct",
@@ -143,12 +142,13 @@
 		            contentType: 'application/json; charset=euc-kr',
 		            data : JSON.stringify(search),
 		            dataType: "json",
-		            success: function(JSONData){
+		            success: function(JSONData) {
 		            	
 		            	currentPage ++;
 		            	search.currentPage=currentPage;
 		                var length = JSONData.length;
-		                if( length < 6 ){
+		                
+		                if( length < 6 ) {
 		                    isEnd = true;
 		                }
 		                
@@ -158,9 +158,7 @@
 		                	
 		                    $('.row').eq(1).append('<div class="col-sm-6 col-md-4">'
 				                      		+'<div class="thumbnail">'
-				                      		+'<input type = "hidden" name = "prodNo" value = "'
-				                      		+product.prodNo
-				                      		+'"/>'
+				                      		+'<input type = "hidden" name = "prodNo" value = "'+product.prodNo+'"/>'
 				                     		+'<a href="#">'
 				                    		+'<img src="../images/uploadFiles/'+product.fileNames[0]+'" alt="..." />'
 				                      		+'</a>'
@@ -170,9 +168,9 @@
 				                         	+'<p>'+product.price+'￦</p>'
 				                     		+'</div>'
 				                   	   		+'</div>');
-		                    equalHeight($(".thumbnail")); 
 		                   
-		                    
+		                    equalHeight($(".thumbnail")); 
+		                
 		                });
 		               
 		               $(function link() {
@@ -190,16 +188,15 @@
 		                $(function () {
 	                		$('#currentPage').val(currentPage);
 	                	});
-		            }//end of ajax success
-		        });
-	      
-	    }
-	});
-	});
-	//무한스크롤 끝
+		            }//end of ajax success part
+		        });//end of ajax
+	    	}// 스크롤 최하단 판단 if 끝	
+		});//스크롤 무빙 이벤트;
+	});//무한스크롤 끝
 	
-	//오토 컴플릿
+	//오토 컴플릿 시작
 	autoComplete = function () {
+		
 		var availableTags = null
 		
 		$.ajax(
@@ -221,10 +218,8 @@
 		);
 	}	
 	
-	
+	//서치 컨디션에 따라 오토컴플릿 적용 여부 결정.	
 	$(function () {
-		
-	
 		
 		if($('#searchCondition').val()=='1') {
 			autoComplete();
@@ -235,12 +230,11 @@
 				autoComplete();
 			} else {
 				$( "#searchKeyword" ).autocomplete({
-						   source: null
+					source: null
 				});
 			}
 		});
 	});
-	
 	//오토 컴플릿 끝
 </script>
 
@@ -259,7 +253,6 @@
 <div class="row">
 <div class="col-md-12 text-right">
 			    <form class="form-inline" name="detailForm">
-			    
 				  <div class="form-group">
 				    <select class="form-control" name="searchCondition" id="searchCondition" >
 						<c:if test = "${user.role eq 'admin'}">
@@ -290,12 +283,11 @@
 				  <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
 				  <input type="hidden" id="currentPage" name="currentPage" value=""/>
 				  <input type="hidden" id="menu" name="menu" value=""/>
-				  
-				  
 				</form>
 	    	</div>
 	    </div>
 	    <br>
+
 <form name="productForm">
 <div class="row">
 <c:set var="i" value="0"/>
@@ -303,7 +295,9 @@
 		<c:set var="i" value="${i+1}"/>
  		<div class="col-sm-6 col-md-4">
    		 <div class="thumbnail">
+   		 
 	   		<input type = "hidden" name = "prodNo" value = "${product.prodNo}"/>
+    		
     		<a href="#">
    			   <img src="../images/uploadFiles/${product.fileNames[0]}" alt="...">
      		</a>
@@ -316,8 +310,8 @@
   	   </div>
   </c:forEach>
 </div>
-
 </form>
+
 </div>
 </body>
 </html>
