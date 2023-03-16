@@ -15,6 +15,6 @@ public interface PurchaseDao {
 	public Purchase getPurchase(int tranNo) throws Exception;
 	public List<Purchase> getPurchaseList(Search search, String userId) throws Exception;
 	public int getTotalCount(String userId) throws Exception ;
-	public Integer checkCart(String userId) throws Exception;
-	//public Integer getCartQuantity(int cartTranNo) throws Exception;
+	public Integer getCartTranNo(String userId) throws Exception;
+	
 }

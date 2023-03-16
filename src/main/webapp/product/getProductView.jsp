@@ -68,7 +68,7 @@ function resetData(){
 //attr('enctype','multipart/form-data');
 $(function () {
 	
-	$('.ct_btn01:contains("장바구니")').on('click',function(){
+	$('#addCart').on('click',function(){
 		$('form').attr('action','../purchase/addCart').attr('method','post').submit();
 	});
 	
@@ -79,12 +79,14 @@ $(function () {
 	$('.btn-primary:contains("구매")').on('click',function(){
 		self.location='../purchase/addPurchase?prodNo=${product.prodNo }'
 	});
+	
 	$('.btn-primary:contains("추가 등록")').on('click',function(){
 		self.location='addProductView.jsp'
 	});
+	
 	 
 	$('.btn-default:contains("확인")').on('click',function(){
-		history.go(-1);
+		$(self.location).attr("href","../product/listProduct?menu=${menu}");
 	});
 	
 	$('.ct_btn01:contains("취소")').on('click',function(){
@@ -103,6 +105,7 @@ $(function () {
    	<!-- ToolBar End /////////////////////////////////////-->
 	
 	<!--  화면구성 div Start /////////////////////////////////////-->
+	<form>
 	<div class="container">
 	
 		<div class="page-header">
@@ -176,7 +179,15 @@ $(function () {
 		<hr/>
 		<div class="row">
 	  		<div class="col-xs-4 col-md-2"><strong>수 량</strong></div>
-			<div class="col-xs-8 col-md-4">${product.stock}</div>
+			
+				<c:if test="${product.stock > 0 }">
+					<div class="col-xs-8 col-md-4">${product.stock}</div>
+				</c:if>
+				
+				<c:if test="${product.stock <= 0}">
+			 		<div class="col-xs-8 col-md-4">품&nbsp;&nbsp;절</div>
+				</c:if>
+				
 		</div>
 		
 		<hr/>
@@ -197,9 +208,29 @@ $(function () {
 		  		</c:if>
 		  		
 		  		<c:if test = "${user.role eq 'user'}">
+		  			<span class="col-md-2">
+			  			
+			  			<c:if test="${product.stock > 0}">
+			  				<select name="quantity" class="form-control">
+									<c:forEach var="i" begin = "1" end = "${product.stock }" >
+										<option value="${i }" >${i }개</option>
+									</c:forEach>
+								</select>
+							</c:if>
+							
+						</span>
+					<c:if test="${product.stock > 0}">
+					<button type="button" class="btn btn-default col-md-2" id="addCart">
+					장바구니에 담기
+					</button>
+					</c:if>
+					<input type="hidden" name="prodNo" value="${product.prodNo }"/>	
+
+					<c:if test="${product.stock > 0}">
 		  			<button type="button" class="btn btn-primary">구매</button>
 		  		</c:if>
-	  		
+
+		  		</c:if>
 	  			<button type="button" class="btn btn-default">확인</button>
 	  		</div>
 		</div>
@@ -207,6 +238,7 @@ $(function () {
 		<br/>
 		
  	</div>
+ 	</form>
  	<!--  화면구성 div Start /////////////////////////////////////-->
 </body>
 </html>

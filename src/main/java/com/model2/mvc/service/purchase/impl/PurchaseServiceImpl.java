@@ -74,9 +74,11 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public Integer checkCart(String userId) throws Exception {
-		return purchaseDao.checkCart(userId);
+	public Integer getCartTranNo(String userId) throws Exception {
+		return purchaseDao.getCartTranNo(userId);
 	}
+
+
 
 	
 

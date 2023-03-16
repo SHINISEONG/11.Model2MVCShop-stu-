@@ -14,7 +14,8 @@
 		<result property="price" 			column="price" 				jdbcType="NUMERIC" />
 		<result property="fileName" 		column="image_file" 		jdbcType="VARCHAR" />
 		<result property="regDate" 			column="reg_date" 			jdbcType="DATE" />
-		<result property="stock"			column="stock"				jdbcType="NUMERIC"/> 
+		<result property="stock"			column="stock"				jdbcType="NUMERIC"/>
+		<result property="cartQuantity"		column="cartQuantity"		jdbcType="NUMERIC"/> 
 	</resultMap>
 	
 	<!-- SQL : INSERT -->
@@ -86,7 +87,7 @@
 	<select  id="getProductList"  parameterType="search"	resultMap="productSelectMap">
 	  SELECT * 
 	  FROM (SELECT inner_table.*, ROWNUM AS row_seq
-		  	FROM   (SELECT p.prod_no, p.prod_name, p.price, p.reg_date, p.image_file, NVL(s.stock,0) stock 
+		  	FROM   (SELECT p.prod_no, p.prod_name, p.price, p.reg_date, p.image_file, NVL(s.stock,0) stock, NVL(cart.quantity, 0) cartQuantity 
 					FROM product p, stock s, (
 											  SELECT prod_no, quantity
 											  FROM cart
@@ -113,6 +114,9 @@
 					  		</if>
 					  	</if>
 				  	</where>
+				  	<if test ="searchOrderType == 'orderByProdNo'.toString()">
+				  		ORDER BY p.prod_no
+				  	</if>
 				  	<if test ="searchOrderType == 'orderByDateDESC'.toString()">
 				  		ORDER BY p.reg_date DESC,
 				  		p.prod_no

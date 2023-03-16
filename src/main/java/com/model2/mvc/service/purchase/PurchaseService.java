@@ -15,6 +15,6 @@ public interface PurchaseService {
 	public void updatePurchase(Purchase purchase) throws Exception;
 	public void updateTranCode(Purchase purchase) throws Exception;
 	public int getTotalCount(String userId) throws Exception;
-	public Integer checkCart(String userId) throws Exception;
-	//public Integer getCartQuantity(int cartTranNo) throws Exception;
+	public Integer getCartTranNo(String userId) throws Exception;
+	
 }

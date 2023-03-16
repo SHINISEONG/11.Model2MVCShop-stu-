@@ -62,7 +62,7 @@
 	<div class="container">
 	
 		<div class="page-header text-info">
-	       <h3>장바구니</h3>
+	       <h3>주문조회</h3>
 	    </div>
 	    
 	    <!-- table 위쪽 검색 Start /////////////////////////////////////-->
@@ -148,7 +148,8 @@
       </table>
       </form>
 	  <!--  table End /////////////////////////////////////-->
-	  <button type="button" class="btn btn-primary">구매</button>
+	  <button type="button" class="btn btn-primary">수정</button>
+	  <button type="button" class="btn btn-default">확인</button>
  	</div>
  	<!--  화면구성 div End /////////////////////////////////////-->
  	

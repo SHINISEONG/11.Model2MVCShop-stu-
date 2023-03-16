@@ -52,8 +52,8 @@ function resetData(){
 
 $(function () {
 	$("button.btn.btn-primary:contains('구 매')").on("click" , function() {
-		$('#prodNo').val('${param.prodNo}');
-		$('form').attr('method','post').attr('action','addPurchase').submit();
+		
+		$('form').attr('method','post').attr('action','addMultiplePurchase').submit();
 	});
 	
 	$("button.btn.btn-primary:contains('뒤 로')").on('click',function(){
@@ -77,7 +77,7 @@ $(function () {
 		
 		<!-- form Start /////////////////////////////////////-->
 		<form name="detailForm" class="form-horizontal">
-		
+		<%--
 		  <div class="form-group">
 		  	<input type = "hidden" name = "prodNo" id = "prodNo" />
 		    <label for="prodName" class="col-sm-offset-1 col-sm-3 control-label">상 품 명</label>
@@ -117,7 +117,7 @@ $(function () {
 			   </select>
 		     </div>
 		  </div>
-		  
+		 --%>
 		  <div class="form-group">
 		    <label for="price" class="col-sm-offset-1 col-sm-3 control-label">구매자 아이디</label>
 		     <div class="col-sm-4">
@@ -168,6 +168,10 @@ $(function () {
 		    <div class="col-sm-4">
 		      <input type="date" name="divyDate"  class="form-control"  id = "divyDate"/>
 		      </div>
+		  </div>
+		  
+		  <div>
+		  	<input type = "hidden" name="cartTranNo" value = "${cartTranNo }" />
 		  </div>
 		  
 		  <div class="form-group">

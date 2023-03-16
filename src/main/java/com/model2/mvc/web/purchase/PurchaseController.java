@@ -1,9 +1,14 @@
 package com.model2.mvc.web.purchase;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -49,6 +54,20 @@ public class PurchaseController {
 	}
 
 	///RequestMethod
+	
+	
+	@GetMapping("addPurchase")
+	public ModelAndView addPurchaseView(@RequestParam("prodNo") int prodNo) throws Exception {
+		
+		Product product = productService.getProduct(prodNo);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		
+		modelAndView.addObject("product", product);
+		modelAndView.setViewName("forward:/purchase/addPurchaseView.jsp");
+		return modelAndView;
+	}
+	
 	@PostMapping("addPurchase")
 	public ModelAndView addPurchase(@ModelAttribute("purchase")Purchase purchase,
 									@RequestParam("prodNo") int prodNo,
@@ -64,23 +83,12 @@ public class PurchaseController {
 		purchase.setTranCode("1");
 		
 		purchaseService.addPurchase(purchase);
+		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("purchase", purchase);
 		modelAndView.setViewName("forward:/purchase/addPurchase.jsp");
 		return modelAndView;
 	
-	}
-	
-	@GetMapping("addPurchase")
-	public ModelAndView addPurchaseView(@RequestParam("prodNo") int prodNo) throws Exception {
-		
-		Product product = productService.getProduct(prodNo);
-		
-		ModelAndView modelAndView = new ModelAndView();
-		
-		modelAndView.addObject("product", product);
-		modelAndView.setViewName("forward:/purchase/addPurchaseView.jsp");
-		return modelAndView;
 	}
 	
 	@RequestMapping("getPurchase")
@@ -177,8 +185,8 @@ public class PurchaseController {
 		
 		int cartTranNo=1;
 		
-		if((purchaseService.checkCart(((User)session.getAttribute("user")).getUserId())) != null) {
-			cartTranNo = purchaseService.checkCart(((User)session.getAttribute("user")).getUserId());
+		if((purchaseService.getCartTranNo(((User)session.getAttribute("user")).getUserId())) != null) {
+			cartTranNo = purchaseService.getCartTranNo(((User)session.getAttribute("user")).getUserId());
 		}
 		
 		search.setCartTranNo(cartTranNo);
@@ -188,6 +196,7 @@ public class PurchaseController {
 		}
 		
 		search.setPageSize(100);
+		search.setSearchOrderType("orderByProdNo");
 		
 		Map<String,Object> map = productService.getProductList(search);
 		
@@ -200,7 +209,7 @@ public class PurchaseController {
 		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.addObject("search", search);
 		modelAndView.setViewName("forward:/purchase/listCart.jsp");
-		
+		session.setAttribute("cartProdList", map.get("list"));
 		return modelAndView;
 	}
 	
@@ -210,11 +219,12 @@ public class PurchaseController {
 								HttpSession session) throws Exception {
 		int cartTranNo=0;
 		
-		if((purchaseService.checkCart(((User)session.getAttribute("user")).getUserId())) != null) {
-			cartTranNo = purchaseService.checkCart(((User)session.getAttribute("user")).getUserId());
+		if((purchaseService.getCartTranNo(((User)session.getAttribute("user")).getUserId())) != null) {
+			cartTranNo = purchaseService.getCartTranNo(((User)session.getAttribute("user")).getUserId());
 		}
 		
 		if (cartTranNo == 0) {
+			
 			Purchase purchase = new Purchase();
 			
 			purchase.setBuyer((User)session.getAttribute("user"));
@@ -223,7 +233,7 @@ public class PurchaseController {
 			purchase.setPurchaseProd(product);
 			purchase.setTranCode("9");
 			purchaseService.addPurchase(purchase);
-			cartTranNo = purchaseService.checkCart(((User)session.getAttribute("user")).getUserId());
+			cartTranNo = purchaseService.getCartTranNo(((User)session.getAttribute("user")).getUserId());
 			
 		}
 		
@@ -237,6 +247,60 @@ public class PurchaseController {
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/purchase/addCartResultView.jsp");
+		return modelAndView;
+	}
+	
+	@GetMapping("addMultiplePurchase")
+	public ModelAndView addMultiplePurchase(@RequestParam("cartTranNo") int cartTranNo) {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("cartTranNo", cartTranNo);
+		modelAndView.setViewName("forward:/purchase/addMultiplePurchaseView.jsp");
+		return modelAndView;
+	}
+	
+	@PostMapping("addMultiplePurchase")
+	public ModelAndView addMultiplePurchase(@RequestParam("cartTranNo") int cartTranNo,
+											@ModelAttribute("purchase") Purchase purchase,
+											HttpSession session) throws Exception {
+		
+		for(Product product : (ArrayList<Product>)session.getAttribute("cartProdList")) {
+			product.setStock(product.getStock()-product.getCartQuantity());
+			productService.updateProduct(product);
+		}
+		
+		purchase.setTranNo(cartTranNo);
+		purchase.setTranCode("8");
+		System.out.println("뽈쬬쓰"+purchase);
+		purchaseService.updatePurchase(purchase);
+		purchaseService.updateTranCode(purchase);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		
+		session.setAttribute("cartProdList", null);
+		modelAndView.setViewName("forward:listPurchase");
+		return modelAndView;
+	}
+	
+	@GetMapping("listMultiplePurchaseProd")
+	public ModelAndView listMultiplePurchaseProd(@ModelAttribute("search")Search search) throws Exception {
+		
+		if(search.getCurrentPage()==0) {
+			search.setCurrentPage(1);
+		}
+		
+		search.setPageSize(100);
+		search.setSearchOrderType("orderByProdNo");
+		
+		System.out.println("써치써치"+search);
+		
+		Map<String,Object> map = productService.getProductList(search);
+		
+		ModelAndView modelAndView = new ModelAndView();
+		
+		modelAndView.addObject("list", map.get("list"));
+		modelAndView.addObject("search", search);
+		modelAndView.setViewName("forward:listMultiplePurchaseProd.jsp");
 		return modelAndView;
 	}
 }

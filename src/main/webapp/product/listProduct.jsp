@@ -35,6 +35,10 @@
 	  body {
             padding-top : 50px;
         }
+        
+      img {
+      	height : 350px;
+      }
     </style>
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->

@@ -30,7 +30,8 @@
 		<result property="price" 			column="price" 				jdbcType="NUMERIC" />
 		<result property="fileName" 		column="image_file" 		jdbcType="VARCHAR" />
 		<result property="regDate" 			column="reg_date" 			jdbcType="DATE" />
-		<result property="stock"			column="stock"				jdbcType="NUMERIC"/> 
+		<result property="stock"			column="stock"				jdbcType="NUMERIC"/>
+		<result property="cartQuantity"		column="cartQuantity"		jdbcType="NUMERIC"/> 
 	</resultMap>
 	
 	 <select 	id="selectProductByProdNo"	parameterType="int"	resultMap="productSelectMap">
@@ -43,15 +44,15 @@
 	 
 	 <!-- User Association을 해결하기 위한 부분들 -->
  	 <resultMap id="userSelectMap" type="user">
-		 <result property="userId" 			column="user_id" 			jdbcType="VARCHAR"/>
-		 <result property="userName"	column="user_name" 		jdbcType="VARCHAR" />
-		 <result property="password" 	column="password" 		jdbcType="VARCHAR" />
-		 <result property="role" 				column="role" 					jdbcType="VARCHAR" />
-		 <result property="ssn" 				column="ssn" 					jdbcType="VARCHAR" />
-		 <result property="phone" 			column="cell_phone" 		jdbcType="VARCHAR" />
-		 <result property="addr" 				column="addr" 					jdbcType="VARCHAR" />
-		 <result property="email" 			column="email" 				jdbcType="NUMERIC"  />
-		 <result property="regDate" 		column="reg_date" 			jdbcType="DATE" />
+		 <result property="userId" 		column="user_id" 			jdbcType="VARCHAR"/>
+		 <result property="userName"	column="user_name" 			jdbcType="VARCHAR" />
+		 <result property="password" 	column="password" 			jdbcType="VARCHAR" />
+		 <result property="role" 		column="role" 				jdbcType="VARCHAR" />
+		 <result property="ssn" 		column="ssn" 				jdbcType="VARCHAR" />
+		 <result property="phone" 		column="cell_phone" 		jdbcType="VARCHAR" />
+		 <result property="addr" 		column="addr" 				jdbcType="VARCHAR" />
+		 <result property="email" 		column="email" 				jdbcType="NUMERIC"  />
+		 <result property="regDate" 	column="reg_date" 			jdbcType="DATE" />
 	 </resultMap>
 	 
 	 <select 	id="selectUserByUserId"	 parameterType="String"	resultMap="userSelectMap">
@@ -95,7 +96,7 @@
 	 <!-- SQL : SELECT ONE -->
 	 <select 	id="getPurchase"	parameterType="int"	resultMap="purchaseSelectMap">
 		SELECT 
-		tran_no, prod_no, buyer_id, payment_option, receiver_name, 
+		tran_no, prod_no, buyer_id, TRIM(payment_option) "payment_option", receiver_name, 
 		receiver_phone, dlvy_addr, dlvy_request, TRIM(NVL(tran_status_code,0)) "tran_status_code",
 		order_date, dlvy_date, quantity
 		FROM transaction WHERE tran_no = #{tranNo}
@@ -106,11 +107,12 @@
 		FROM (
 				SELECT inner_table.*, ROWNUM AS row_seq 
 				FROM (
-						SELECT tran_no, buyer_id, receiver_name, receiver_phone, TRIM(NVL(tran_status_code,0)) "TRAN_STATUS_CODE", order_date 
+						SELECT tran_no, buyer_id, receiver_name, receiver_phone, TRIM(NVL(tran_status_code,0)) "tran_status_code", order_date 
 						FROM transaction
 						<where>
+							tran_status_code NOT LIKE '%9%'
 							<if test='!(userId.equals("admin"))'>
-								buyer_id = #{userId}
+							AND	buyer_id = #{userId}
 							</if>
 						</where>
 						<if test='search.searchOrderType.equals("orderByDateDESC")'>
@@ -123,6 +125,7 @@
 				WHERE ROWNUM &lt;= #{search.endRowNum} ) 
 		WHERE row_seq &gt;=#{search.startRowNum}
 	 </select>
+	
 	 
 	 <select  id="getTotalCount"  parameterType="string"	 resultType="int">
 	  	SELECT COUNT(*)
@@ -135,17 +138,11 @@
 			  </where> ) countTable						
 	 </select>
 	 
-	 <select id="checkCart"	parameterType="string"	resultType="Integer">
+	 <select id="getCartTranNo"	parameterType="String"	resultType="Integer">
 	 	SELECT tran_no
 	 	FROM transaction
 	 	WHERE buyer_id = #{userId:VARCHAR}
 	 	AND tran_status_code LIKE '%9%'
-	 </select>
-	 
-	 <select id="getCartQuantity"	parameterType="int"	resultType="Integer">
-	 	SELECT quantity
-	 	FROM cart
-	 	WHERE tran_no = #{cartTranNo}
 	 </select>
 	 
 	 <update id="updatePurchase" parameterType="purchase">

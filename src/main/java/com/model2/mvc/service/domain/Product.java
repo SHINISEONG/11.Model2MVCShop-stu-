@@ -17,8 +17,8 @@ public class Product {
 	private Date regDate;
 	private int stock;
 	private List<String> fileNames;
+	private int cartQuantity;
 	
-	//TODO 재고 구현후 뷰 파트까지 리팩토링 끝나면 아래 필드 지우기
 
 	
 	public Product(){
@@ -78,6 +78,14 @@ public class Product {
 		this.stock = stock;
 	}
 
+	public int getCartQuantity() {
+		return cartQuantity;
+	}
+
+
+	public void setCartQuantity(int cartQuantity) {
+		this.cartQuantity = cartQuantity;
+	}
 
 	
 
@@ -107,6 +115,8 @@ public class Product {
 				+ stock + "]";
 	}
 
+
+	
 	
 	
 	

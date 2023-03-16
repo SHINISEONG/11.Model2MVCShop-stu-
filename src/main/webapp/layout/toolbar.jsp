@@ -58,6 +58,7 @@
 		                     <ul class="dropdown-menu">
 		                         <li><a href="#">판매상품등록</a></li>
 		                         <li><a href="#">판매상품관리</a></li>
+ 		                         <li><a href="#">주 문 관 리</a></li>
 		                         <li class="divider"></li>
 		                         <li><a href="#">etc..</a></li>
 		                     </ul>
@@ -77,6 +78,7 @@
 	                           <li><a href="#">구매이력조회</a></li>
 	                         </c:if>
 	                         
+	                         
 	                         <li><a href="#">최근본상품</a></li>
 	                         <li class="divider"></li>
 	                         <li><a href="#">etc..</a></li>
@@ -85,10 +87,17 @@
 	                 
 	                 <li><a href="#">etc...</a></li>
 	             </ul>
-	             
+	           
 	             <ul class="nav navbar-nav navbar-right">
 	                <li><a href="#">로그아웃</a></li>
 	            </ul>
+	            
+	            <c:if test = "${user.role eq 'user' }">
+		            <ul class="nav navbar-nav navbar-right">
+		              <li><a href="#"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a></li>
+		            </ul>
+	            </c:if>
+	             
 		</div>
 		<!-- dropdown hover END -->	       
 	    
@@ -138,5 +147,21 @@
 	 	$( "a:contains('상 품 검 색')" ).on("click" , function() {
 			$(self.location).attr("href","../product/listProduct?menu=search");
 		});
+	 	
+	 	//=============  구매이력조회 =============	
+	 	$( "a:contains('구매이력조회')" ).on("click" , function() {
+			$(self.location).attr("href","../purchase/listPurchase");
+		});
+	 	
+	 	//=============  주 문 관 리 =============	
+	 	$( "a:contains('주 문 관 리')" ).on("click" , function() {
+			$(self.location).attr("href","../purchase/listPurchase");
+		});
+	 	
+	 	//============= 장바구니보기 ============
+	 	$( ".glyphicon" ).on("click" , function() {
+			$(self.location).attr("href","../purchase/listCart");
+		});
+	 	
 		
 	</script>  

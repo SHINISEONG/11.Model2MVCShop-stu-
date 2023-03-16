@@ -69,10 +69,11 @@ public class PurchaseDaoImpl implements PurchaseDao {
 	}
 
 	@Override
-	public Integer checkCart(String userId) throws Exception {
-		return sqlSession.selectOne("PurchaseMapper.checkCart", userId);
+	public Integer getCartTranNo(String userId) throws Exception {
+		return sqlSession.selectOne("PurchaseMapper.getCartTranNo", userId);
 	}
 
+	
 	
 	
 
