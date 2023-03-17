@@ -81,21 +81,20 @@ $(function () {
 		  <input type="hidden" name="prodNo" value="${product.prodNo }"/>
 		  <input type="hidden" name="buyerId" value="${purchase.buyer.userId}"/>
 		  
-		  <div class="form-group">
-		    <label for="price" class="col-sm-offset-1 col-sm-3 control-label">구매수량</label>
-		     <div class="col-sm-4">
-		       <select name="quantity" class="form-control" id="quantity">
-		 		 <c:forEach var="i" begin = "1" end = "${product.stock }" >
-					 <option value="${i }" >${i }</option>
-				 </c:forEach>
-			   </select>
-		     </div>
-		  </div>
+		  
 		  
 		  <div class="form-group">
 		    <label for="price" class="col-sm-offset-1 col-sm-3 control-label">구매자 아이디</label>
 		     <div class="col-sm-4">
 				${user.userId}			   
+		     </div>
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="price" class="col-sm-offset-1 col-sm-3 control-label">구매수량</label>
+		     <div class="col-sm-4">
+		     		${purchase.quantity }
+		     		<input type = "hidden" name="quantity" value = ${purchase.quantity }/>
 		     </div>
 		  </div>
 		  

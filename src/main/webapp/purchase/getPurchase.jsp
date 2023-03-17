@@ -75,7 +75,7 @@ $(function () {
 	
 	
 	$('.btn-default:contains("»Æ¿Œ")').on('click',function(){
-		$(self.location).attr("href","../product/listProduct?menu=${param.menu}");
+		$(self.location).attr("href","listPurchase");
 	});
 	
 })

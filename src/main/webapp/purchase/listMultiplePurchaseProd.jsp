@@ -148,7 +148,10 @@
       </table>
       </form>
 	  <!--  table End /////////////////////////////////////-->
-	  <button type="button" class="btn btn-primary">수정</button>
+	  <c:if test="${purchase.tranCode eq '8' }">
+	  	<button type="button" class="btn btn-primary">수정</button>
+	  </c:if>
+	  
 	  <button type="button" class="btn btn-default">확인</button>
  	</div>
  	<!--  화면구성 div End /////////////////////////////////////-->

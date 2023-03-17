@@ -112,7 +112,7 @@ $(function () {
 		     <div class="col-sm-4">
 		       <select name="quantity" class="form-control" id="quantity">
 		 		 <c:forEach var="i" begin = "1" end = "${product.stock }" >
-					 <option value="${i }" >${i }</option>
+					 <option value="${i }"  ${(quantity == i)?"selected":"" }  >${i }</option>
 				 </c:forEach>
 			   </select>
 		     </div>

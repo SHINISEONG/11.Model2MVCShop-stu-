@@ -43,7 +43,13 @@
     
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
-	
+	function fncGetProductListOrder(currentPage, searchOrderType, menu) {
+		
+		$("#currentPage").val(currentPage);
+		$("#menu").val(menu);
+		$("#searchOrderType").val(searchOrderType);
+	   	$("form").eq(0).attr('action','listProduct').attr('method','post').submit();		
+	}
 	//이벤트 컨트롤
 	$(function () {
 		function fncGetProductList(currentPage, searchOrderType, menu) {
@@ -290,7 +296,18 @@
 				</form>
 	    	</div>
 	    </div>
-	    <br>
+	    
+	    
+	    
+	   <div class="col-md-12 text-right">
+	   	<a href = "javascript:fncGetProductListOrder('1', 'orderByDateDESC','${param.menu }')" >최근 등록순</a>&nbsp;&nbsp;&nbsp;
+	   	<a href = "javascript:fncGetProductListOrder('1', 'orderByDateASC','${param.menu }')">오래된 등록순</a>&nbsp;&nbsp;&nbsp;
+	   	<a href = "javascript:fncGetProductListOrder('1', 'orderByPriceDESC','${param.menu }')">가격 높은순</a>&nbsp;&nbsp;&nbsp;
+	   	<a href = "javascript:fncGetProductListOrder('1', 'orderByPriceASC','${param.menu }')">가격 낮은순</a>
+	   	<br/><br/>
+	   </div>
+
+	    
 
 <form name="productForm">
 <div class="row">

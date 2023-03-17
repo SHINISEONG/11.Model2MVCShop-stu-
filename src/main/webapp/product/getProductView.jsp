@@ -77,7 +77,8 @@ $(function () {
 	});
 	
 	$('.btn-primary:contains("구매")').on('click',function(){
-		self.location='../purchase/addPurchase?prodNo=${product.prodNo }'
+		$('form').attr('action','../purchase/addPurchase').attr('method','get').submit();
+		
 	});
 	
 	$('.btn-primary:contains("추가 등록")').on('click',function(){
@@ -139,6 +140,10 @@ $(function () {
 			
 			<hr/>
 		</c:if>
+		
+		<div>
+			<input type="hidden" name="prodNo" value="${product.prodNo }"/>
+		</div>
 				
 		<div class="row">
 	  		<div class="col-xs-4 col-md-2"><strong>상 품 명</strong></div>

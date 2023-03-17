@@ -57,13 +57,15 @@ public class PurchaseController {
 	
 	
 	@GetMapping("addPurchase")
-	public ModelAndView addPurchaseView(@RequestParam("prodNo") int prodNo) throws Exception {
+	public ModelAndView addPurchaseView(@RequestParam("prodNo") int prodNo,
+										@RequestParam("quantity") int quantity) throws Exception {
 		
 		Product product = productService.getProduct(prodNo);
 		
 		ModelAndView modelAndView = new ModelAndView();
 		
 		modelAndView.addObject("product", product);
+		modelAndView.addObject("quantity", quantity);
 		modelAndView.setViewName("forward:/purchase/addPurchaseView.jsp");
 		return modelAndView;
 	}
@@ -71,16 +73,16 @@ public class PurchaseController {
 	@PostMapping("addPurchase")
 	public ModelAndView addPurchase(@ModelAttribute("purchase")Purchase purchase,
 									@RequestParam("prodNo") int prodNo,
-									@RequestParam("quantity") int quantity,
 									HttpSession session) throws Exception {
-	
+		
 		Product product = productService.getProduct(prodNo);
-		product.setStock(product.getStock()-quantity);
+		product.setStock(product.getStock()-purchase.getQuantity());
 		productService.updateProduct(product);
 		
 		purchase.setPurchaseProd(product);
 		purchase.setBuyer((User)session.getAttribute("user"));
 		purchase.setTranCode("1");
+		System.out.println("„œ¶ì¶ì " + purchase.getQuantity());
 		
 		purchaseService.addPurchase(purchase);
 		

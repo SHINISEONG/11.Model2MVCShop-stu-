@@ -7,6 +7,7 @@ public class Search {
 	private String searchCondition;
 	private String searchKeyword;
 	private String searchOrderType;
+		
 	private int searchMinPrice;
 	private int searchMaxPrice;
 	
@@ -16,6 +17,8 @@ public class Search {
 	private int endRowNum;
 	private int startRowNum;
 	private int cartTranNo;
+	
+	private String searchTranCode;
 	
 	public Search(){
 	}
@@ -96,6 +99,14 @@ public class Search {
 
 	public void setCartTranNo(int cartTranNo) {
 		this.cartTranNo = cartTranNo;
+	}
+
+	public String getSearchTranCode() {
+		return searchTranCode;
+	}
+
+	public void setSearchTranCode(String searchTranCode) {
+		this.searchTranCode = searchTranCode;
 	}
 
 	@Override

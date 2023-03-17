@@ -69,8 +69,8 @@
 				
 			});
 						
-			$( ".code1" ).css("color" , "blue");
-			$( ".code8" ).css("color" , "orange");
+			$( "td:nth-child(1)" ).css("color" , "blue");
+			
 			
 			
 		});	
